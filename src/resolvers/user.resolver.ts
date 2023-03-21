@@ -14,7 +14,7 @@ export default class UserResolver {
   }
 
   @Mutation(() => User)
-  async createUser(@Arg('input') input: CreateUserInput) {
+  createUser(@Arg('input') input: CreateUserInput) {
     return this.userServer.createUser(input);
   }
 
@@ -23,12 +23,8 @@ export default class UserResolver {
     return this.userServer.login(input, context);
   }
 
-  @Query(() => User)
-  me() {
-    return {
-      _id: 1,
-      name: 'John Doe',
-      email: 'ismaelbr87@gmail.com',
-    };
+  @Query(() => User, { nullable: true })
+  me(@Ctx() context: Context) {
+    return context.user;
   }
 }

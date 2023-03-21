@@ -46,16 +46,26 @@ class UserService {
 
     /** Set a cookie for the jwt */
 
+    // context.res.cookie('accessToken', token, {
+    //   maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year 3.154e10
+    //   httpOnly: true,
+    //   domain:
+    //     process.env.NODE_ENV === 'production'
+    //       ? '.ismaelbr.com'
+    //       : 'localhost',
+    //   path: '/',
+    //   sameSite: 'strict',
+    //   secure: process.env.NODE_ENV === 'production' ? true : false,
+    // });
+
     context.res.cookie('accessToken', token, {
-      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year 3.154e10
+      //maxAge: 3.154e10, // 1 year
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
       httpOnly: true,
-      domain:
-        process.env.NODE_ENV === 'production'
-          ? '.ismaelbr.com'
-          : 'localhost',
+      domain: 'localhost',
       path: '/',
       sameSite: 'strict',
-      secure: process.env.NODE_ENV === 'production' ? true : false,
+      secure: true,
     });
 
     /** Return the jwt */
