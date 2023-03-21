@@ -1,6 +1,11 @@
-import { Arg, Mutation, Query, Resolver } from 'type-graphql';
-import { CreateUserInput, User } from './schema/user.schema';
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import {
+  CreateUserInput,
+  LoginInput,
+  User,
+} from '../schema/user.schema';
 import UserService from '../service/user.service';
+import Context from '../types/context';
 
 @Resolver()
 export default class UserResolver {
@@ -11,6 +16,11 @@ export default class UserResolver {
   @Mutation(() => User)
   async createUser(@Arg('input') input: CreateUserInput) {
     return this.userServer.createUser(input);
+  }
+
+  @Mutation(() => String) // return jwt token
+  login(@Arg('input') input: LoginInput, @Ctx() context: Context) {
+    return this.userServer.login(input, context);
   }
 
   @Query(() => User)

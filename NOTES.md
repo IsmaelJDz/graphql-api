@@ -26,3 +26,5 @@
   "strictPropertyInitialization": false
 }
 ```
+
+Search course with tests
