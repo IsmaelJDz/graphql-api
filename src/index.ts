@@ -14,6 +14,7 @@ import { connectToMongo } from './utils/mongo';
 import { verifyJwt } from './utils/jwt';
 import { User } from './schema/user.schema';
 import Context from './types/context';
+import authChecker from './utils/authChecker';
 
 async function bootstrap() {
   /** Build schema */
@@ -21,7 +22,7 @@ async function bootstrap() {
   const schema = await buildSchema({
     // resolvers: [__dirname + "/resolvers/**/*.ts"],
     resolvers,
-    //authChecker,
+    authChecker,
   });
 
   /** Init express */
@@ -42,8 +43,6 @@ async function bootstrap() {
 
       const context = ctx;
 
-      console.log('cookies', ctx.req.cookies);
-
       if (ctx.req.cookies.accessToken) {
         const user = verifyJwt<User>(ctx.req.cookies.accessToken);
 
@@ -55,7 +54,11 @@ async function bootstrap() {
     plugins: [
       process.env.NODE_ENV === 'production'
         ? ApolloServerPluginLandingPageProductionDefault()
-        : ApolloServerPluginLandingPageGraphQLPlayground(),
+        : ApolloServerPluginLandingPageGraphQLPlayground({
+            settings: {
+              'request.credentials': 'include',
+            },
+          }),
     ],
   });
 

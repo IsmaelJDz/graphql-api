@@ -65,7 +65,7 @@ class UserService {
       domain: 'localhost',
       path: '/',
       sameSite: 'strict',
-      secure: true,
+      secure: process.env.NODE_ENV === 'production' ? true : false,
     });
 
     /** Return the jwt */
